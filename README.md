@@ -39,7 +39,7 @@ cd ./shardingsphere-seata-spring-boot-test/
 
 - This involves the following things.
   - Snapshot version of Apache ShardingSphere 5.5.0
-  - Seata Server 2.0 and Seata Client 2.0
+  - Seata Server 2.0 and Seata Spring Boot 2.0
   - Spring Boot 3.2.2
   - Three independent Postgresql Server 16.2 instances
   - GraalVM CE For JDK21
