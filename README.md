@@ -37,9 +37,11 @@ cd ./shardingsphere-seata-spring-boot-test/
 ./mvnw -e -T1C clean test
 ```
 
-- This involves the following dependencies.
+- This involves the following things.
   - Snapshot version of Apache ShardingSphere 5.5.0
   - Seata Server 2.0 and Seata Client 2.0
   - Spring Boot 3.2.2
-  - Postgresql Server 16.2
+  - Three independent Postgresql Server 16.2 instances
   - GraalVM CE For JDK21
+
+- Obviously, the current Example has unit tested all the functions associated with the Sharding feature.

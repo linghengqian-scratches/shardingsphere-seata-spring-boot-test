@@ -11,71 +11,39 @@ import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
-@SuppressWarnings({"SqlDialectInspection", "SqlNoDataSourceInspection"})
+@SuppressWarnings({"SqlDialectInspection", "SqlNoDataSourceInspection", "UnusedReturnValue"})
 public final class OrderItemRepository {
-    
+
     private final DataSource dataSource;
-    
+
     public OrderItemRepository(final DataSource dataSource) {
         this.dataSource = dataSource;
     }
-    
-    /**
-     * create table if not exists in MySQL.
-     * @throws SQLException SQL exception
-     */
-    public void createTableIfNotExistsInMySQL() throws SQLException {
-        String sql = "CREATE TABLE IF NOT EXISTS t_order_item "
-                + "(order_item_id BIGINT NOT NULL AUTO_INCREMENT, order_id BIGINT NOT NULL, user_id INT NOT NULL, phone VARCHAR(50), status VARCHAR(50), PRIMARY KEY (order_item_id))";
-        try (
-                Connection connection = dataSource.getConnection();
-                Statement statement = connection.createStatement()) {
-            statement.executeUpdate(sql);
-        }
-    }
-    
+
     /**
      * create table if not exists in Postgres.
+     *
      * @throws SQLException SQL exception
      */
     public void createTableIfNotExistsInPostgres() throws SQLException {
-        String sql = "CREATE TABLE IF NOT EXISTS t_order_item (\n"
-                + "    order_item_id BIGSERIAL PRIMARY KEY,\n"
-                + "    order_id BIGINT NOT NULL,\n"
-                + "    user_id INTEGER NOT NULL,\n"
-                + "    phone VARCHAR(50),\n"
-                + "    status VARCHAR(50)\n"
-                + ");";
+        String sql = """
+                CREATE TABLE IF NOT EXISTS t_order_item (
+                    order_item_id BIGSERIAL PRIMARY KEY,
+                    order_id BIGINT NOT NULL,
+                    user_id INTEGER NOT NULL,
+                    phone VARCHAR(50),
+                    status VARCHAR(50)
+                );""";
         try (
                 Connection connection = dataSource.getConnection();
                 Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
         }
     }
-    
-    /**
-     * create table in MS SQL Server. `order_item_id` is not set to `IDENTITY(1,1)` to simplify the unit test.
-     * This also ignored the default schema of the `dbo`.
-     * @throws SQLException SQL exception
-     */
-    public void createTableInSQLServer() throws SQLException {
-        String sql = "CREATE TABLE [t_order_item] (\n"
-                + "    order_item_id bigint NOT NULL,\n"
-                + "    order_id bigint NOT NULL,\n"
-                + "    user_id int NOT NULL,\n"
-                + "    phone varchar(50),\n"
-                + "    status varchar(50),\n"
-                + "    PRIMARY KEY (order_item_id)\n"
-                + ");";
-        try (
-                Connection connection = dataSource.getConnection();
-                Statement statement = connection.createStatement()) {
-            statement.executeUpdate(sql);
-        }
-    }
-    
+
     /**
      * drop table.
+     *
      * @throws SQLException SQL exception
      */
     public void dropTable() throws SQLException {
@@ -86,9 +54,10 @@ public final class OrderItemRepository {
             statement.executeUpdate(sql);
         }
     }
-    
+
     /**
      * truncate table.
+     *
      * @throws SQLException SQL exception
      */
     public void truncateTable() throws SQLException {
@@ -99,50 +68,10 @@ public final class OrderItemRepository {
             statement.executeUpdate(sql);
         }
     }
-    
-    /**
-     * create shadow table if not exists.
-     * @throws SQLException SQL exception
-     */
-    public void createTableIfNotExistsShadow() throws SQLException {
-        String sql = "CREATE TABLE IF NOT EXISTS t_order_item "
-                + "(order_item_id BIGINT NOT NULL AUTO_INCREMENT, order_id BIGINT NOT NULL, user_id INT NOT NULL, phone "
-                + "VARCHAR(50), status VARCHAR(50), PRIMARY KEY (order_item_id)) /* SHARDINGSPHERE_HINT:shadow=true,foo=bar*/";
-        try (
-                Connection connection = dataSource.getConnection();
-                Statement statement = connection.createStatement()) {
-            statement.executeUpdate(sql);
-        }
-    }
-    
-    /**
-     * drop shadow table.
-     * @throws SQLException SQL exception
-     */
-    public void dropTableShadow() throws SQLException {
-        String sql = "DROP TABLE t_order_item /* SHARDINGSPHERE_HINT:shadow=true,foo=bar*/";
-        try (
-                Connection connection = dataSource.getConnection();
-                Statement statement = connection.createStatement()) {
-            statement.executeUpdate(sql);
-        }
-    }
-    
-    /**
-     * truncate shadow table.
-     * @throws SQLException SQL exception
-     */
-    public void truncateTableShadow() throws SQLException {
-        String sql = "TRUNCATE TABLE t_order_item /* SHARDINGSPHERE_HINT:shadow=true,foo=bar*/";
-        try (
-                Connection connection = dataSource.getConnection();
-                Statement statement = connection.createStatement()) {
-            statement.executeUpdate(sql);
-        }
-    }
-    
+
     /**
      * insert something to table.
+     *
      * @param orderItem orderItem
      * @return orderItemId of the insert statement
      * @throws SQLException SQL exception
@@ -165,9 +94,10 @@ public final class OrderItemRepository {
         }
         return orderItem.getOrderItemId();
     }
-    
+
     /**
      * delete by orderItemId.
+     *
      * @param orderItemId orderItemId
      * @throws SQLException SQL exception
      */
@@ -180,9 +110,10 @@ public final class OrderItemRepository {
             preparedStatement.executeUpdate();
         }
     }
-    
+
     /**
      * select all.
+     *
      * @return list of OrderItem
      * @throws SQLException SQL exception
      */

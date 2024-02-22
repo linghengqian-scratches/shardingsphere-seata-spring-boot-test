@@ -14,15 +14,15 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@SuppressWarnings({"SqlDialectInspection", "SqlNoDataSourceInspection"})
+@SuppressWarnings({"SqlDialectInspection", "SqlNoDataSourceInspection", "UnusedReturnValue"})
 public final class AddressRepository {
-    
+
     private final DataSource dataSource;
-    
+
     public AddressRepository(final DataSource dataSource) {
         this.dataSource = dataSource;
     }
-    
+
     /**
      * create table t_address if not exists.
      *
@@ -36,26 +36,7 @@ public final class AddressRepository {
             statement.executeUpdate(sql);
         }
     }
-    
-    /**
-     * create table t_address in MS SQL Server.
-     * This also ignored the default schema of the `dbo`.
-     *
-     * @throws SQLException SQL exception
-     */
-    public void createTableInSQLServer() throws SQLException {
-        String sql = "CREATE TABLE [t_address] (\n"
-                + "    address_id bigint NOT NULL,\n"
-                + "    address_name varchar(100) NOT NULL,\n"
-                + "    PRIMARY KEY (address_id)\n"
-                + ");";
-        try (
-                Connection connection = dataSource.getConnection();
-                Statement statement = connection.createStatement()) {
-            statement.executeUpdate(sql);
-        }
-    }
-    
+
     /**
      * drop table t_address.
      *
@@ -69,7 +50,7 @@ public final class AddressRepository {
             statement.executeUpdate(sql);
         }
     }
-    
+
     /**
      * truncate table t_address.
      *
@@ -83,7 +64,7 @@ public final class AddressRepository {
             statement.executeUpdate(sql);
         }
     }
-    
+
     /**
      * insert something to table t_address.
      *
@@ -96,13 +77,13 @@ public final class AddressRepository {
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setLong(1, address.getAddressId());
-            preparedStatement.setString(2, address.getAddressName());
+            preparedStatement.setLong(1, address.addressId());
+            preparedStatement.setString(2, address.addressName());
             preparedStatement.executeUpdate();
         }
-        return address.getAddressId();
+        return address.addressId();
     }
-    
+
     /**
      * delete by id.
      *
@@ -118,7 +99,7 @@ public final class AddressRepository {
             preparedStatement.executeUpdate();
         }
     }
-    
+
     /**
      * select all.
      *
@@ -133,15 +114,13 @@ public final class AddressRepository {
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
-                Address address = new Address();
-                address.setAddressId(resultSet.getLong(1));
-                address.setAddressName(resultSet.getString(2));
+                Address address = new Address(resultSet.getLong(1), resultSet.getString(2));
                 result.add(address);
             }
         }
         return result;
     }
-    
+
     /**
      * Assert rollback with transactions.
      * This is currently just a simple test against a non-existent table and does not involve the competition scenario of distributed transactions.
