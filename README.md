@@ -1,4 +1,4 @@
-1## shardingsphere-seata-spring-boot-test
+## shardingsphere-seata-spring-boot-test
 
 - For https://github.com/apache/shardingsphere/issues/29712 .
 
