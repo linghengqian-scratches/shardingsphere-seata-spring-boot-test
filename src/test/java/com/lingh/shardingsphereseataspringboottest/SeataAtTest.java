@@ -35,7 +35,7 @@ class SeataAtTest {
     @Test
     void assertShardingInSeataTransactions() throws SQLException {
         try (
-                GenericContainer<?> container = new FixedHostPortGenericContainer<>("seataio/seata-server:1.8.0")
+                GenericContainer<?> container = new FixedHostPortGenericContainer<>("seataio/seata-server:2.0.0")
                         .withFixedExposedPort(37403, 8091)
                         .withExposedPorts(7091)) {
             container.start();
