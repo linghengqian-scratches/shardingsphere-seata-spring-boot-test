@@ -7,6 +7,7 @@
   This is all done on GraalVM For JDK 21.
 
 - Of course we are **not** discussing GraalVM Native Image here.
+  This Example is modified from nativeTest on the ShardingSphere side.
 
 - Both Postgresql and Seata server are created by `testcontainers-java`.
   You do not need to start the middleware of Postgresql and Seata server in advance.
@@ -35,3 +36,10 @@ git clone git@github.com:linghengqian/shardingsphere-seata-spring-boot-test.git
 cd ./shardingsphere-seata-spring-boot-test/
 ./mvnw -e -T1C clean test
 ```
+
+- This involves the following dependencies.
+  - Snapshot version of Apache ShardingSphere 5.5.0
+  - Seata Server 2.0 and Seata Client 2.0
+  - Spring Boot 3.2.2
+  - Postgresql Server 16.2
+  - GraalVM CE For JDK21
